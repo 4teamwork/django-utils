@@ -77,6 +77,8 @@ class SentryMixin:
     # A path to an alternative CA bundle file in PEM-format.
     SENTRY_CACERTS = values.Value(None, environ_prefix="")
 
+    SENTRY_TAGS = {}
+
     @classmethod
     def post_setup(cls):
         super().post_setup()
@@ -88,3 +90,7 @@ class SentryMixin:
                 environment=cls.SENTRY_ENVIRONMENT,
                 ca_certs=cls.SENTRY_CACERTS,
             )
+
+        if cls.SENTRY_TAGS:
+            for tagname, tagvalue in cls.SENTRY_TAGS.items():
+                sentry_sdk.set_tag(tagname, tagvalue)
