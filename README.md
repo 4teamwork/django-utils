@@ -13,7 +13,7 @@ Usage:
 # models.py
 
 from django.db import models
-from ftw.django_utils.db.fields.text import TextField
+from django_utils.db.fields import TextField
 
 
 class MyModel(models.Model):
