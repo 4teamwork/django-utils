@@ -1,3 +1,7 @@
+from django import forms
+from django.db import models
+
+
 class TextField(models.TextField):
     """
     A TextField (without max_length) which displays its form element as a single-line 'CharField'
