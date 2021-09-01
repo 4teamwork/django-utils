@@ -16,6 +16,11 @@ class LogMixin:
     LOGGING_STREAM = sys.stderr
 
     @property
+    def LOGGING_FILENAME(self):
+        default_value = super().BASE_DIR / "log" / "django.log"
+        return values.Value(environ_name="LOGGING_FILENAME", default=default_value)
+
+    @property
     def LOGGING(self):
         return {
             "version": 1,
@@ -41,7 +46,7 @@ class LogMixin:
                     "level": "DEBUG",
                     "class": "logging.FileHandler",
                     "formatter": "verbose",
-                    "filename": super().BASE_DIR / "log" / "django.log",
+                    "filename": self.LOGGING_FILENAME,
                 },
                 "stream": {
                     "class": "logging.StreamHandler",
