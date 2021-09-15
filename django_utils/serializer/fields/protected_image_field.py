@@ -4,6 +4,7 @@ from rest_framework import serializers
 from django.contrib.contenttypes.models import ContentType
 import base64
 from urllib import parse
+import hashlib
 
 
 class ProtectedImageField(serializers.ImageField):
@@ -12,10 +13,23 @@ class ProtectedImageField(serializers.ImageField):
         Create a string with all information required to access the object, in the form of
         <app_label>|<model>|<pk>|<field_name>
         """
+
+        hash = hashlib.sha256()
+        if hasattr(obj, 'modified'):
+            hash.update(str(obj.modified).encode())
+
         content_type = ContentType.objects.get_for_model(obj)
         return parse.quote_plus(
             base64.urlsafe_b64encode(
-                "|".join([content_type.app_label, content_type.model, str(obj.pk), field_name]).encode()
+                "|".join(
+                    [
+                        content_type.app_label,
+                        content_type.model,
+                        str(obj.pk),
+                        field_name,
+                        hash.hexdigest(),
+                    ]
+                ).encode()
             )
         )
 

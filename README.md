@@ -230,3 +230,8 @@ response-route-if-not = empty:${X_SENDFILE} static:${X_SENDFILE}
 ```
 
 Make sure the `static-safe` matches your `MEDIA_URL` setting.
+
+### Caching
+
+The object the file is attached to, must have a field named `modified`, that changes every time the object is updated, in order to create a new URL when the file is updated.
+The field is not mandatory but required for the caching to work properly.
