@@ -149,3 +149,84 @@ Loads given datasets using `python manage.py load_e2e_data --datasets [datasets]
 #### PingView (`/ping`)
 
 Responds an HTTP response with status code 200.
+
+
+## Protected File View
+
+Django Utils offers a way to protect your files from anonymous access.
+
+### Requirements
+
+The file view relies on `django-sendfile2`.
+
+```bash
+pip install django-sendfile2
+```
+
+### View
+
+Django Utils offers a file getter view under `django_utils.views.FileGetterView`.
+This view has to be used for a protected access to files.
+The view will only deliver the files requested, when the user is logged in by default.
+In order to override the behavior, subclass the `FileGetterView` and implement `get_object`.
+The view will only permit access, when the `get_object` method evaluates a model instance. Simply return `None` to block the access.
+
+```python
+from django_utils.views import FileGetterView
+
+class MyFileView(FileGetterView):
+    def get_object(self, model_class, id, request, **kwargs):
+        return model_class._default_manager.get(user=request.user, id=id)
+```
+
+### URL
+
+To relay all the requests for assets to the file getter view, append your urls with a pattern like this:
+
+```python
+urlpatterns = [
+    re_path(r"media/(?P<file_info>.*)", FileGetterView.as_view(), name="media"),
+]
+```
+
+Your pattern has to end with `(?P<file_info>.*)` and register a file getter view.
+
+### Serializer
+
+In order for the file getter view to resolve certain model fields, the field must be a `ProtectedImageField` in the serializer:
+
+```python
+from django_utils.serializer.fields import ProtectedImageField
+
+class MySerializer(Serializer):
+    image = ProtectedImageField()
+
+    class Meta:
+        fields = (
+            "image",
+        )
+```
+
+### Settings
+
+Configure your settings as follows:
+
+```python
+SENDFILE_BACKEND = "django_sendfile.backends.simple"
+SENDFILE_ROOT = self.BASE_DIR / "media"
+MEDIA_URL = "/media/"
+```
+
+The `SENDFILE_ROOT` has to point to the directory where your files will be stored.
+The `MEDIA_URL` has to match the url pattern.
+
+If you use uwsgi in production, apply the following settings to your `uwsgi.ini`:
+
+```ini
+plugins = router_static
+static-safe = %(base_path)/media
+collect-header = X-Sendfile X_SENDFILE
+response-route-if-not = empty:${X_SENDFILE} static:${X_SENDFILE}
+```
+
+Make sure the `static-safe` matches your `MEDIA_URL` setting.
