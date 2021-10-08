@@ -132,7 +132,7 @@ if settings.CONFIGURATION == "settings.TestingE2E":
 
 #### E2ETestSetupView (`/setup`)
 
-Creates a snapshot of the media root folder, resets the database and loads initial data (calls `python manage.py load_e2e_data --datasets initial`). 
+Creates a snapshot of the media root folder, resets the database, restores permissions and loads initial data (calls `python manage.py load_e2e_data --datasets initial`). 
 
 #### E2ETestTearDownView (`/teardown`)
 
