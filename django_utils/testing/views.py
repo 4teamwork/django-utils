@@ -42,6 +42,12 @@ class E2ETestSetupView(View):
     def load_initial_data(self):
         call_command("load_e2e_data", datasets=["initial"])
 
+    def restore_permissions(self):
+        """
+        Restore permissions using a management command provided by django-extensions.
+        """
+        call_command("update_permissions")
+
     def post(self, request, *args, **kwargs):
         logger.info("E2E test setup")
 
@@ -49,6 +55,7 @@ class E2ETestSetupView(View):
         SNAPSHOT_BEFORE.extend(filestructure_snapshot(settings.MEDIA_ROOT))
 
         self.reset_database()
+        self.restore_permissions()
         self.load_initial_data()
 
         return HttpResponse(status=200)
