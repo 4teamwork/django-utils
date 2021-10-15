@@ -235,3 +235,23 @@ Make sure the `static-safe` matches your `MEDIA_URL` setting.
 
 The object the file is attached to, must have a field named `modified`, that changes every time the object is updated, in order to create a new URL when the file is updated.
 The field is not mandatory but required for the caching to work properly.
+
+
+## Authentication
+
+### SessionAuthentication
+
+Based on ``SessionAuthentication`` of Django REST Framework, this class allows distinguishing status codes 401 and 403 in API responses. 
+It returns a response with status code 401 for unauthenticated requests (user is not logged in) and returns a response with status code 403 if the user is logged in but does not have sufficient permissions.
+
+Requires ``djangorestframework``.
+
+Usage:
+
+```python
+# myproject/settings/base.py
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ["django_utils.authentication.SessionAuthentication"],
+}
+```
