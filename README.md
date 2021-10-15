@@ -157,10 +157,11 @@ Django Utils offers a way to protect your files from anonymous access.
 
 ### Requirements
 
-The file view relies on `django-sendfile2`.
+The file view relies on `django-sendfile2` and `djangorestframework`.
 
 ```bash
 pip install django-sendfile2
+pip install djangorestframework
 ```
 
 ### View
