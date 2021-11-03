@@ -1,6 +1,7 @@
 # django-utils
 A collection of utils used in our Django based web applications
 
+[Changelog](CHANGELOG.rst)
 
 ## Settings
 
@@ -36,6 +37,7 @@ Available environment variables:
 * `SENTRY_DSN` (required)
 * `SENTRY_ENVIRONMENT` (default: `"Production"`)
 * `SENTRY_CACERTS` (default: `None`)
+* `SENTRY_TAGS` (default: `{}`)
 
 Usage:
 
