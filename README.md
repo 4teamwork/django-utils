@@ -36,6 +36,7 @@ Available environment variables:
 * `SENTRY_DSN` (required)
 * `SENTRY_ENVIRONMENT` (default: `"Production"`)
 * `SENTRY_CACERTS` (default: `None`)
+* `SENTRY_TAGS` (default: `{}`)
 
 Usage:
 

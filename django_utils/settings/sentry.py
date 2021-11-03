@@ -11,7 +11,7 @@ class SentryMixin:
     # A path to an alternative CA bundle file in PEM-format.
     SENTRY_CACERTS = values.Value(None, environ_prefix="")
 
-    SENTRY_TAGS = {}
+    SENTRY_TAGS = values.DictValue(default={}, environ_prefix="")
 
     @classmethod
     def post_setup(cls):
