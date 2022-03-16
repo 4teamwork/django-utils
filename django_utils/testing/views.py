@@ -39,6 +39,15 @@ class E2ETestSetupView(View):
                 """
             )
 
+    def clear_solr(self):
+        haystack_connections = getattr(settings, 'HAYSTACK_CONNECTIONS', {})
+        if not haystack_connections:
+            return
+        default_engine = haystack_connections.get('default', {}).get('ENGINE', '')
+        if default_engine != 'haystack.backends.solr_backend.SolrEngine':
+            return
+        call_command("clear_index", "--noinput")
+
     def load_initial_data(self):
         call_command("load_e2e_data", datasets=["initial"])
 
@@ -55,6 +64,7 @@ class E2ETestSetupView(View):
         SNAPSHOT_BEFORE.extend(filestructure_snapshot(settings.MEDIA_ROOT))
 
         self.reset_database()
+        self.clear_solr()
         self.restore_permissions()
         self.load_initial_data()
 
