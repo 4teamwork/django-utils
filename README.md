@@ -55,7 +55,7 @@ class Production(SentryMixin, Base):
 
 ## Management Commands
 
-ℹ️ In order to use the management commands, you need to add `django_utils` to the `INSTALLED_APPS` setting. 
+ℹ️ In order to use the management commands, you need to add `django_utils` to the `INSTALLED_APPS` setting.
 
 ### sentry_test
 
@@ -94,7 +94,7 @@ class MyModel(models.Model):
 
 This package provides views which can be used in E2E tests for test setup and teardown and to login or create test data.
 
-ℹ️ These views rely on the availability of a management command executable as `python manage.py load_e2e_data --datasets initial` to load initial fixture data for the tests. 
+ℹ️ These views rely on the availability of a management command executable as `python manage.py load_e2e_data --datasets initial` to load initial fixture data for the tests.
 
 ⚠️ Important: Never add these views (through `django_utils.testing.urls`) in production mode! They should only be used for testing purposes.
 
@@ -134,7 +134,7 @@ if settings.CONFIGURATION == "settings.TestingE2E":
 
 #### E2ETestSetupView (`/setup`)
 
-Creates a snapshot of the media root folder, resets the database, restores permissions and loads initial data (calls `python manage.py load_e2e_data --datasets initial`). 
+Creates a snapshot of the media root folder, resets the database, restores permissions and loads initial data (calls `python manage.py load_e2e_data --datasets initial`).
 
 #### E2ETestTearDownView (`/teardown`)
 
@@ -244,7 +244,7 @@ The field is not mandatory but required for the caching to work properly.
 
 ### SessionAuthentication
 
-Based on ``SessionAuthentication`` of Django REST Framework, this class allows distinguishing status codes 401 and 403 in API responses. 
+Based on ``SessionAuthentication`` of Django REST Framework, this class allows distinguishing status codes 401 and 403 in API responses.
 It returns a response with status code 401 for unauthenticated requests (user is not logged in) and returns a response with status code 403 if the user is logged in but does not have sufficient permissions.
 
 Requires ``djangorestframework``.
@@ -258,3 +258,49 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ["django_utils.authentication.SessionAuthentication"],
 }
 ```
+
+## Delete hooks
+
+Ianus is capable of requesting user deletion and notifying when users have been deleted. To enable this feature, Ianus requires certain views to be present in the service. Django Utils provides a default implementation for these views, which handle token authentication and validation of the request made by Ianus. To register these views, add the urlpatterns in your service being notified by Ianus, as shown below:
+
+``` python
+# urls.py
+from django.urls import include
+
+urlpatterns = [
+    path("", include("django_utils.webhooks.delete_user.urls")),
+]
+```
+
+When Ianus requests an inquiry to delete a user, a hook is called to determine if the user can be deleted or not. The default hook will always accept the inquiry. However, this behavior can be overridden by providing a module with an `inquire_delete` method. To do this, configure the `INAUS_USER_DELETE_HOOKS` setting and point it to a module that implements the `inquire_delete` method, as shown below:
+
+``` python
+# settings.py
+INAUS_USER_DELETE_HOOKS = "backend.authentication.delete_hooks"
+```
+
+The `inquire_delete` method will receive the user that Ianus is inquiring to delete as a parameter. The `inquire_delete` method must return a tuple, where the first component is a boolean indicating whether the inquiry has passed or not, and the second component is a reason as a string, which tells Ianus the reason behind a failing inquiry. When the inquiry is successful, the reason can be set to `None`, as shown below:
+
+``` python
+# delete_hooks.py
+def inquire_delete(user):
+    return (True, None)
+```
+
+Alternatively, you can return a failure message to Ianus, indicating why the inquiry failed, as shown below:
+
+``` python
+# delete_hooks.py
+def inquire_delete(user):
+    return (False, "User cannot be deleted due to specific reasons.")
+```
+
+The same concept applies to user delete notification. A method with the name `subscribe_delete` in the same module has to be provided to subscribe to user deletion from Ianus. The `subscribe_delete` method will receive the user that was deleted in Ianus as an argument. The default implementation will always delete the user. You can provide your own implementation in this method, as shown below:
+
+``` python
+# delete_hooks.py
+def subscribe_delete(user):
+    user.delete()
+```
+
+To configure the authentication token for the delete hook API, use the `IANUS_DELETE_HOOK_API_TOKEN` setting. The authentication token that is configured in Ianus must match this token for the authentication to work correctly.
