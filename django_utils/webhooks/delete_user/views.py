@@ -10,12 +10,11 @@ from django_utils.webhooks.delete_user.serializers import InquireDeleteUserSeria
 from django_utils.webhooks.delete_user.serializers import SubscribeUserDeleteSerializer
 from django_utils.webhooks.delete_user.token_authentication import WebhookTokenAuthentication
 
-
 User = get_user_model()
 
 
 try:
-    delete_hooks = importlib.import_module(settings.INAUS_USER_DELETE_HOOKS)
+    delete_hooks = importlib.import_module(settings.IANUS_USER_DELETE_HOOKS)
 except ModuleNotFoundError:
     delete_hooks = default_delete_hooks
 

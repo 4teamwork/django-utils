@@ -272,11 +272,11 @@ urlpatterns = [
 ]
 ```
 
-When Ianus requests an inquiry to delete a user, a hook is called to determine if the user can be deleted or not. The default hook will always accept the inquiry. However, this behavior can be overridden by providing a module with an `inquire_delete` method. To do this, configure the `INAUS_USER_DELETE_HOOKS` setting and point it to a module that implements the `inquire_delete` method, as shown below:
+When Ianus requests an inquiry to delete a user, a hook is called to determine if the user can be deleted or not. The default hook will always accept the inquiry. However, this behavior can be overridden by providing a module with an `inquire_delete` method. To do this, configure the `IANUS_USER_DELETE_HOOKS` setting and point it to a module that implements the `inquire_delete` method, as shown below:
 
 ``` python
 # settings.py
-INAUS_USER_DELETE_HOOKS = "backend.authentication.delete_hooks"
+IANUS_USER_DELETE_HOOKS = "backend.authentication.delete_hooks"
 ```
 
 The `inquire_delete` method will receive the user that Ianus is inquiring to delete as a parameter. The `inquire_delete` method must return a tuple, where the first component is a boolean indicating whether the inquiry has passed or not, and the second component is a reason as a string, which tells Ianus the reason behind a failing inquiry. When the inquiry is successful, the reason can be set to `None`, as shown below:
