@@ -1,10 +1,11 @@
+import base64
+from urllib import parse
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.contenttypes.models import ContentType
 from django.http import Http404
 from django.views.generic import View
 from django_sendfile import sendfile
-from django.contrib.contenttypes.models import ContentType
-import base64
-from urllib import parse
 
 
 class FileGetterView(LoginRequiredMixin, View):
@@ -27,9 +28,7 @@ class FileGetterView(LoginRequiredMixin, View):
         If any of this fails, a 404 should be raised in the view, but logging information for developers must be available.
         """
         try:
-            (app, model, id, field, hash) = (
-                base64.urlsafe_b64decode(parse.unquote(url)).decode().split("|")
-            )
+            (app, model, id, field, hash) = base64.urlsafe_b64decode(parse.unquote(url)).decode().split("|")
             model = ContentType.objects.get(app_label=app, model=model)
             obj = self.get_object(model.model_class(), id, request=request, field=field)
             return obj, getattr(obj, field)

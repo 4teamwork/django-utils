@@ -14,6 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django_utils.testing.filestructure import cleanup_path
 from django_utils.testing.filestructure import filestructure_snapshot
 
+
 logger = logging.getLogger(__name__)
 
 SNAPSHOT_BEFORE = []
@@ -40,11 +41,11 @@ class E2ETestSetupView(View):
             )
 
     def clear_solr(self):
-        haystack_connections = getattr(settings, 'HAYSTACK_CONNECTIONS', {})
+        haystack_connections = getattr(settings, "HAYSTACK_CONNECTIONS", {})
         if not haystack_connections:
             return
-        default_engine = haystack_connections.get('default', {}).get('ENGINE', '')
-        if default_engine != 'haystack.backends.solr_backend.SolrEngine':
+        default_engine = haystack_connections.get("default", {}).get("ENGINE", "")
+        if default_engine != "haystack.backends.solr_backend.SolrEngine":
             return
         call_command("clear_index", "--noinput")
 

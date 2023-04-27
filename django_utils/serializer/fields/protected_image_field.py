@@ -1,10 +1,10 @@
-from django.urls import reverse
-from rest_framework import serializers
+import base64
+import hashlib
+from urllib import parse
 
 from django.contrib.contenttypes.models import ContentType
-import base64
-from urllib import parse
-import hashlib
+from django.urls import reverse
+from rest_framework import serializers
 
 
 class ProtectedImageField(serializers.ImageField):
@@ -15,7 +15,7 @@ class ProtectedImageField(serializers.ImageField):
         """
 
         hash = hashlib.sha256()
-        if hasattr(obj, 'modified'):
+        if hasattr(obj, "modified"):
             hash.update(str(obj.modified).encode())
 
         content_type = ContentType.objects.get_for_model(obj)
