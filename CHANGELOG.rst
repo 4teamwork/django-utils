@@ -4,7 +4,7 @@ CHANGELOG
 Unreleased
 ----------
 
-- No changes yet.
+- Provide reference implementation for Ianus delete hooks.
 
 2021.3.4 (2021-11-03)
 ---------------------
