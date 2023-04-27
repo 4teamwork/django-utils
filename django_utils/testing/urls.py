@@ -2,6 +2,7 @@ from django.urls import path
 
 from django_utils.testing import views
 
+
 urlpatterns = [
     path("setup", views.E2ETestSetupView.as_view()),
     path("teardown", views.E2ETestTearDownView.as_view()),

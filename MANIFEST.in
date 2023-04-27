@@ -1,0 +1,2 @@
+# We don't release this package. This dummy MANIFEST.in stops zest.releaser
+# from complaining.

@@ -1,0 +1,5 @@
+[flake8]
+# From https://github.com/4teamwork/ftw-buildouts/blob/master/pycodestyle.cfg
+ignore = E121,E122,E123,E125,E126,E127,E128,E203,E301,W606,W503
+max-line-length = 125
+exclude = .git,__pycache__,.venv,.eggs

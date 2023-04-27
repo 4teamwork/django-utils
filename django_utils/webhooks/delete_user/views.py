@@ -10,6 +10,7 @@ from django_utils.webhooks.delete_user.serializers import InquireDeleteUserSeria
 from django_utils.webhooks.delete_user.serializers import SubscribeUserDeleteSerializer
 from django_utils.webhooks.delete_user.token_authentication import WebhookTokenAuthentication
 
+
 User = get_user_model()
 
 

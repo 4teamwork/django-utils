@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+set -euo pipefail
+
+export GIT_NAME=$(git config --get user.name)
+export GIT_EMAIL=$(git config --get user.email)
+git pull
+poetry run release
