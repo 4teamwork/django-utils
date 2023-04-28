@@ -1,7 +1,33 @@
 # django-utils
 A collection of utils used in our Django based web applications
 
-[Changelog](CHANGELOG.rst)
+[Changelog](CHANGELOG.md)
+
+## Development
+
+Installing dependencies, assuming you have poetry installed:
+
+``` bash
+poetry install
+```
+
+## Release
+
+This package uses towncrier to manage the changelog, and to introduce new changes, a file with a concise title and a brief explanation of what the change accomplishes should be created in the `changes` directory, with a suffix indicating whether the change is a feature, bugfix, or other.
+
+To make a release and publish it to PyPI, the following command can be executed:
+
+``` bash
+./bin/release
+```
+
+This script utilizes zest.releaser and towncrier to create the release, build the wheel, and publish it to PyPI.
+
+Before running the release command, it is necessary to configure poetry with an access token for PyPI by executing the following command and inserting the token stored in 1password:
+
+``` bash
+poetry config pypi-token.pypi <token>
+```
 
 ## Settings
 
