@@ -1,4 +1,12 @@
 
+2023.3.0 (2023-07-07)
+---------------------
+
+Other changes:
+
+- No longer depend on specific Django major version.
+
+
 2023.2.0 (2023-04-27)
 ---------------------
 
