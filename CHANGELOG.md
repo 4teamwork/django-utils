@@ -1,4 +1,12 @@
 
+2023.4.0 (2023-10-31)
+---------------------
+
+Other changes:
+
+- Provide additional default sentry arguments and allow overriding them more easily.
+
+
 2023.3.0 (2023-07-07)
 ---------------------
 
