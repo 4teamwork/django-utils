@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ftw-django-utils"
-version = "2023.3.0"
+version = "2023.4.0"
 description = "A collection of utils used in our Django based web applications."
 authors = ["4teamwork AG"]
 readme = "README.md"
