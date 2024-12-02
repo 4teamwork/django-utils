@@ -1,4 +1,12 @@
 
+2024.1.0 (2024-12-02)
+---------------------
+
+Other changes:
+
+- No longer depend on specific sentry-sdk version
+
+
 2023.4.0 (2023-10-31)
 ---------------------
 
