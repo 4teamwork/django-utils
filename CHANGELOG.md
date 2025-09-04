@@ -1,4 +1,12 @@
 
+2025.1.0 (2025-09-04)
+---------------------
+
+Other changes:
+
+- Dependencies upgraded. (`TI-2450 <https://4teamwork.atlassian.net/browse/TI-2450>`_)
+
+
 2024.1.0 (2024-12-02)
 ---------------------
 
