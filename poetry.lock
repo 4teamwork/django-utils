@@ -1403,5 +1403,5 @@ towncrier = ">=19.9.0"
 
 [metadata]
 lock-version = "2.1"
-python-versions = ">=3.13, <4"
-content-hash = "b71e31a078690428eae1bfa06613e71f85bc860b248274c7801b29e5dfc0f36d"
+python-versions = ">=3.12, <4"
+content-hash = "a9b793bfd1b65075690a6d3c4b268614450e8724cbb84be3426a901d0e0422a7"
